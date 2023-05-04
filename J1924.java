@@ -10,14 +10,12 @@ public class J1924 {
         int d = Integer.parseInt(st.nextToken());
 
         String[] days = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
-        int[] months = {0,31,28,31,30,31,30,31,31,30,31,30,31};
-        int n = 0;
+        int[] months = {31,28,31,30,31,30,31,31,30,31,30,31};
 
-        for (int i = 0; i < m; i++) {
-            n += months[i];
+        for (int i = 0; i < m-1; i++) {
+            d += months[i];
         }
 
-        n += d-1;
-        System.out.print(days[n%7]);
+        System.out.print(days[d%7]);
     }
 }
