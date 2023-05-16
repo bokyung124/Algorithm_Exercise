@@ -19,5 +19,4 @@ public class J1037 {
         }
         System.out.println(max * min);
     }
-
 }
