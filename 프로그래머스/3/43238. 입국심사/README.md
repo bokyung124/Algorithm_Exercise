@@ -63,11 +63,56 @@
 
 <p>20분이 되었을 때, 두 번째 심사대가 비지만 6번째 사람이 그곳에서 심사를 받지 않고 1분을 더 기다린 후에 첫 번째 심사대에서 심사를 받으면 28분에 모든 사람의 심사가 끝납니다.</p>
 
-<h5>문제가 잘 안풀린다면😢</h5>
+# 풀이
 
-<p>힌트가 필요한가요? [코딩테스트 연습 힌트 모음집]으로 오세요! → <a href="https://school.programmers.co.kr/learn/courses/14743?itm_content=lesson43238" target="_blank" rel="noopener">클릭</a></p>
+- 입국 심사에 총 걸리는 시간
+    - 최소값: **min(times)**
+    - 최대값: **max(times) * n**
 
-<p>※ 공지 - 2019년 9월 4일 문제에 새로운 테스트 케이스를 추가하였습니다. 도움을 주신 weaver9651 님께 감사드립니다.</p>
+- 최소값과 최대값을 각각 리스트의 양 끝 값으로 하여 이진탐색 수행!
+
+<br>
+
+```python
+def solution(n, times):
+    answer = 0
+    
+    left = min(times)
+    right = max(times) * n
+    
+    while left <= right:
+        mid = (left + right) // 2
+        checked = 0
+        
+        for time in times:
+            checked += mid // time
+            if checked >= n:
+                break
+        
+        if checked >= n:
+            answer = mid
+            right = mid - 1
+        elif checked < n:
+            left = mid + 1
+
+    return answer
+```
+
+- `mid`: 현재 검토 중인 시간
+- `checked`: `mid` 시간 동안 심사받을 수 있는 사람의 수
+- `for time in times:` -> 각 심사관에 대해 `mid` 시간 동안 해당 심사관이 몇 명을 심사할 수 있는지 계산
+    - `checked`의 값이 `n` 이상이라면 현재 `mid` 시간이 모든 사람을 심사하기에 충분한 시간이라는 것을 의미
+    - 현재 `mid` 보다 작은 범위에서 다시 검색하여 최소값을 찾아감
+
+- **이진탐색**
+    - *구해야 할 것*을 mid로 두고 left, right 조절
 
 
-> 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+# 시간 복잡도
+
+O(m * log(max(times) * n))
+
+> - m: times 배열의 길이
+> - max(times) * n: 이진 탐색 최대 반복 범위 (가장 느린 심사관)
+>
+> - 전체 반복 횟수인 `log(max(times) * n)`을 `m`번 반복하는 시간 복잡도를 가짐
