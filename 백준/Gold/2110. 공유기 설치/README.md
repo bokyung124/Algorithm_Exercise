@@ -30,3 +30,48 @@
 
  <p>첫째 줄에 가장 인접한 두 공유기 사이의 최대 거리를 출력한다.</p>
 
+# 풀이
+
+- 주어진 위치들 사이에서 가능한 가장 큰 최소 거리를 찾는 것이 목표
+    - 최대-최소 최적화 문제 => **이진탐색**
+
+<br>
+
+```python
+n, c = map(int, input().split())
+ls = [int(input()) for _ in range(n)]
+ls.sort()
+
+result = 0
+start = 1
+end = ls[-1] - ls[0]
+
+while start <= end:
+    mid = (start + end) // 2
+    cnt = 1
+    current = ls[0]
+    
+    for i in range(1, len(ls)):
+        if ls[i] >= current + mid:
+            cnt += 1
+            current = ls[i]
+    
+    if cnt >= c:
+        start = mid + 1
+        result = mid
+    else:
+        end = mid - 1
+print(result)
+```
+
+- 리스트의 첫 값과 끝 값을 각각 `start`, `end`로 두고, 평균 값을 `mid`로 정의
+- `cnt`: 현재 `mid` 거리를 유지하면서 설치할 수 있는 공유기의 수
+- `cnt`가 필요한 공유기 수 `c` 이상이면 현재 `mid` 거리는 유효 -> 더 큰 거리를 탐색하기 위해 start 증가시켜 더 큰 거리 탐색
+
+
+# 시간 복잡도
+
+O(log(ls[-1] - ls[0]))
+
+> `ls[-1] - ls[0]`: 이진탐색의 최대 깊이
+> 이진탐색의 범위가 `ls` 리스트에서 가장 큰 값과 가장 작은 값의 차이 -> 최대 거리를 기반으로 함!
