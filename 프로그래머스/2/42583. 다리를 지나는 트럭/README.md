@@ -123,3 +123,45 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+
+## 풀이
+
+```python
+from collections import deque
+
+def solution(bridge_length, weight, truck_weights):
+    answer = 0
+    bridge = deque([0] * bridge_length)
+    trucks = deque(truck_weights)
+    current_weight = 0
+    
+    while bridge:
+        answer += 1
+        current_weight -= bridge.popleft()
+        
+        if trucks:
+            if current_weight + trucks[0] <= weight:
+                truck = trucks.popleft()
+                bridge.append(truck)
+                current_weight += truck
+            else:
+                bridge.append(0)
+        
+    return answer
+```
+
+- [다리 길이, 무게 제한, 트럭의 순서]를 모두 고려해야 함
+- `다리`와 `트럭`을 큐로 잡아야 함! (선입선출 구조)
+    - **deque** 사용
+    - 다리의 길이만큼 시간이 지나면 트럭이 다리에서 빠져 나가게 됨
+- 매 반복마다 + 1초 & 다리의 맨 앞에서 요소 제거 (트럭이 지나가거나 빈 공간이 빠져나감)
+    - 현재 다리 위 트럭의 무게를 `current_weight`으로 관리
+    - 트럭이 추가될 수 있는지 확인하고, 트럭이나 빈 공간 추가
+
+### 시간복잡도, 공간복잡도
+
+- 시간복잡도: O(bridge_length * truck_weights)
+    - 최악: 모든 트럭이 한 번에 하나씩 다리를 건너는 경우
+    - 모든 트럭은 다리의 길이만큼의 시간 동안 다리 위에 머무름
+
+- 공간복잡도: O(bridge_length + truck_weights)
