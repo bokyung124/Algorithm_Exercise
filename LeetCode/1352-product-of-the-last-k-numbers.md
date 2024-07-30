@@ -44,3 +44,37 @@ productOfNumbers.getProduct(2); // return 32. The product of the last 2 numbers 
 	<li>At most <code>4 * 10<sup>4</sup></code> calls will be made to <code>add</code> and <code>getProduct</code>.</li>
 	<li>The product of the stream at any point in time will fit in a <strong>32-bit</strong> integer.</li>
 </ul>
+
+
+<br>
+
+## 풀이
+
+- `add` 로 들어온 값은 스트림에 추가
+- `getProduct` 를 실행하면 스트림에서 들어온 값 k만큼 pop해서 모두 곱하기
+
+```python
+class ProductOfNumbers(object):
+
+    def __init__(self):
+        self.products = [1]
+
+    def add(self, num: int) -> None:
+        if num == 0:
+            self.products = [1]
+        else:
+            self.products.append(self.products[-1] * num)
+
+
+    def getProduct(self, k: int) -> int:
+        if k > len(self.products) - 1:
+            return 0
+        return self.products[-1] // self.products[-k-1]
+```
+
+- 처음에는 들어온 값을 리스트에 추가한 뒤, 반복문을 이용해 k만큼 꺼내서 모두 곱했지만, 시간 초과로 실패
+	- 시간복잡도: O(k)
+- 각 숫자가 들어올 때마다 누적 곱을 리스트에 추가하는 방식으로 바꿈!
+	- 각 연산의 시간복잡도: O(1)
+	- 0이 들어올 경우 누적곱 1로 초기화
+		- `getProduct` 에서 k가 현재 리스트 길이보다 짧다면 중간에 0이 들어온 것 -> 0 반환
