@@ -81,3 +81,40 @@ class Solution(object):
   - 한 섬을 탐색할 때 연속적으로 이어지는 1의 최대 길이와 연관
   - 최악의 경우 -> grid가 모두 1로 채워져있으면 재귀 깊이 O(m * n)
   - 평균적인 경우 -> 한 섬의 크기는 전체 grid보다 작을 수 있기 때문에 O(min(m, n))이 될 수 있음
+
+
+#### 반복적 DFS
+
+```python
+class Solution(object):
+
+    def numIslands(self, grid):
+        if not grid:
+            return 0
+
+        cnt = 0
+        rows, cols = len(grid), len(grid[0])
+
+        for i in range(rows):
+            for j in range(cols):
+                if grid[i][j] == "1":
+                    cnt += 1
+                    self.dfs(grid, i, j)
+        
+        return cnt
+
+    def dfs(self, grid, start_i, start_j):
+        stack = [(start_i, start_j)]
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        while stack:
+            i, j = stack.pop()
+            if 0 <= i < len(grid) and 0 <= j < len(grid[0]) and grid[i][j] == "1":
+                grid[i][j] = "0" 
+                
+                for di, dj in directions:
+                    ni, nj = i + di, j + dj
+                    stack.append((ni, nj))
+```
+
+- 이 문제에서는 재귀적 DFS가 더 빨랐지만, 두 가지 방법이 가능하다는 것!
