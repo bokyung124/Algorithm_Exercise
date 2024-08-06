@@ -107,3 +107,32 @@ def solution(numbers, target):
     - 두 번의 dfs 호출은 순차적으로 실행 -> 첫번째 dfs 호출이 완료되면 해당 스택 메모리 해제 -> 두번째 dfs가 해당 스택 공간 재사용 => O(n)
     - `콜 스택`: 프로그램이 함수를 호출할 때마다 호출 정보가 콜 스택에 쌓임 -> 재귀 함수를 호출할 때마다 새로운 스택 프레임이 콜 스택에 추가됨
         - `스택 프레임`: 함수의 매개변수, 지역 변수, 반환 주소 등의 정보가 포함됨
+
+
+### 반복적 DFS
+
+```python
+def solution(numbers, target):
+    if not numbers:
+        return 0 if target == 0 else 1
+
+    stack = [(0, 0)]   # (current_sum, index)
+    cnt = 0
+
+    while stack:
+        current_sum, idx = stack.pop()
+
+        if idx == len(numbers):
+            if current_sum == target:
+                cnt += 1
+        else:
+            stack.append((current_sum + numbers[idx], idx + 1))
+            stack.append((current_sum - numbers[idx], idx + 1))
+
+    return cnt
+```
+
+- 이 문제에서는 재귀적 DFS가 더 빨랐지만, 두 가지 방법이 가능하다는 것!
+    - 현재 숫자를 더하는 경우와 빼는 경우 두 가지를 스택에 추가
+    - 각 스택 항목은 `(current_sum, idx)` 형태의 튜플로, 현재까지의 합계와 처리 중인 숫자의 인덱스를 나타냄
+    - 모든 숫자를 처리했다면 (`idx == len(numbers)`), 현재 합계가 타겟과 일치하는지 확인하고 cnt 증가
