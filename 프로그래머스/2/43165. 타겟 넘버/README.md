@@ -72,4 +72,38 @@
 </ul>
 
 
-> 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+## 풀이
+
+```python
+cnt = 0
+ 
+def dfs(numbers, target, current, idx):
+    global cnt
+    
+    if idx == len(numbers):
+        if current == target:
+            cnt += 1
+        return
+    
+    dfs(numbers, target, current + numbers[idx], idx + 1)
+    dfs(numbers, target, current - numbers[idx], idx + 1)
+
+def solution(numbers, target):
+    dfs(numbers, target, 0, 0)
+    return cnt
+```
+
+- dfs 종료 조건: 숫자 배열의 끝까지 탐색했을 때 (모든 숫자 처리)
+    - 현재 계산 결과가 타겟 넘버와 같으면 cnt 증가
+
+- 주어진 숫자 배열에서 idx를 1씩 증가시키면서 해당 숫자를 더하거나 빼는 경우에 대해 재귀적으로 dfs 수행
+    - *모든 경우의 수*에 대해 계산하여 값과 비교할 수 있음
+
+- **시간복잡도**: O(2^n)
+    - 리스트의 길이가 n일 때 각 숫자에 대해 더하거나 빼는 두 가지 경우가 있기 때문
+
+- **공간복잡도**: O(n)
+    - 재귀 호출 -> 리스트의 길이만큼 반복
+    - 두 번의 dfs 호출은 순차적으로 실행 -> 첫번째 dfs 호출이 완료되면 해당 스택 메모리 해제 -> 두번째 dfs가 해당 스택 공간 재사용 => O(n)
+    - `콜 스택`: 프로그램이 함수를 호출할 때마다 호출 정보가 콜 스택에 쌓임 -> 재귀 함수를 호출할 때마다 새로운 스택 프레임이 콜 스택에 추가됨
+        - `스택 프레임`: 함수의 매개변수, 지역 변수, 반환 주소 등의 정보가 포함됨
