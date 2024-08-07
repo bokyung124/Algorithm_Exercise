@@ -30,3 +30,47 @@
 
  <p>입력에서 요구한 두 사람의 촌수를 나타내는 정수를 출력한다. 어떤 경우에는 두 사람의 친척 관계가 전혀 없어 촌수를 계산할 수 없을 때가 있다. 이때에는 -1을 출력해야 한다.</p>
 
+
+## 풀이
+
+```python
+from collections import defaultdict
+from sys import stdin, stdout
+
+def dfs(graph, start, end, visited, distance):
+    visited[start] = True
+    
+    if start == end:
+        return distance
+    
+    for neighbor in graph[start]:
+        if not visited[neighbor]:
+            result = dfs(graph, neighbor, end, visited, distance + 1)
+            if result != -1:
+                return result
+    
+    return -1
+
+n = int(stdin.readline())
+start, end = map(int, stdin.readline().split())
+m = int(stdin.readline())
+relationships = [tuple(map(int, stdin.readline().split())) for _ in range(m)]
+
+graph = defaultdict(list)
+
+for parent, child in relationships:
+    graph[parent].append(child)
+    graph[child].append(parent)
+
+visited = [False] * (n + 1)
+
+stdout.write(str(dfs(graph, start, end, visited, 0)))
+```
+
+- defaultdict: 무방향 그래프 생성 -> 부모-자식에 대해 양방향으로 간선 추가
+    - **부모와 자식을 모두 key로** 하여 value 생성
+    - defaultdict -> 키가 존재하지 않을 때 자동으로 기본값 생성 
+
+- 방문한 노드 배열 `visited` 생성
+    - 모든 이웃 (인접한 노드)에 대해 재귀적으로 dfs 호출 -> 거리 1 증가
+    - 목표 노드를 찾으면 거리 반환, 끝까지 목표 노드를 찾지 못하면 -1 반환
