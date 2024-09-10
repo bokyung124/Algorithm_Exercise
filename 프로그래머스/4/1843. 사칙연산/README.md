@@ -84,3 +84,8 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+
+## 시간복잡도
+
+- O(n^3)
+    - 구간의 개수: n^2
