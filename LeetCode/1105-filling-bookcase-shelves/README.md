@@ -53,7 +53,7 @@ Notice that book number 2 does not have to be on the first shelf.
 
 ### 시간 복잡도
 
-O(n^2), n은 books의 길이
+O(n * w), n은 books의 길이, w는 선반 너비
 
 ### 공간 복잡도
 
