@@ -38,3 +38,23 @@ Notice that book number 2 does not have to be on the first shelf.
 	<li><code>1 &lt;= thickness<sub>i</sub> &lt;= shelfWidth &lt;= 1000</code></li>
 	<li><code>1 &lt;= height<sub>i</sub> &lt;= 1000</code></li>
 </ul>
+
+
+
+### 풀이
+
+- `dp` 배열 생성
+	- `dp[i]`: 처음 i개의 책을 놓았을 때의 최소 높이
+
+- 각 책에 대해 반복
+	- 각 책에 대해 현재 책부터 이전 책들을 거꾸로 확인하면서 같은 선반에 놓을 수 있는 책 찾기
+	- 같은 선반에 놓을 수 있는 책들 중 가장 높은 책의 높이를 구하고, 이전 상태의 최소 높이에 이 높이를 더한 값과 현재의 최소 높이를 비교하여 더 작은 값 선택
+	- 모든 책에 대해 이 과정 반복 -> `dp[n]` 반환
+
+### 시간 복잡도
+
+O(n^2), n은 books의 길이
+
+### 공간 복잡도
+
+O(n)  : dp 배열 길이
