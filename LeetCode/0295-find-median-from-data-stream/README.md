@@ -48,3 +48,15 @@ medianFinder.findMedian(); // return 2.0
 	<li>If all integer numbers from the stream are in the range <code>[0, 100]</code>, how would you optimize your solution?</li>
 	<li>If <code>99%</code> of all integer numbers from the stream are in the range <code>[0, 100]</code>, how would you optimize your solution?</li>
 </ul>
+
+## 풀이
+
+- `addNum`
+	- 새로운 숫자를 최대 힙에 추가
+	- 최대 힙의 최대값이 최소 힙의 최소값보다 크면, 최대 힙의 최대값을 최소 힙으로 이동
+	- 최대 힙의 크기가 최소 힙의 크기보다 1개 더 많을 수 있도록 조정
+	- 최소 힙의 크기가 최대 힙의 크기보다 크면, 최소 힙의 최소값을 최대 힙으로 이동
+
+- `findMedian`
+	- 최대 힙과 최소 힙의 크기가 같으면, 두 힙의 루트 값을 평균하여 중앙값 반환
+	- 최대 힙의 크기가 최소 힙의 크기보다 1개 더 많으면, 최대 힙의 루트 값 반환
