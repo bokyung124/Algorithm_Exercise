@@ -7,9 +7,6 @@ class Solution(object):
         :rtype: int
         """
 
-        def is_number(s):
-            return s.lstrip('-').isdigit()
-        
         st = []
         op = {
             "+": operator.add,
@@ -19,7 +16,7 @@ class Solution(object):
         }
         
         for i in tokens:
-            if is_number(i):
+            if i.lstrip('-').isdigit():
                 st.append(int(i))
             else:
                 num2 = st.pop()
